@@ -1,0 +1,16 @@
+=== X Session: ===
+
+Sesman uses the /etc/X11/xinit/Xclients script. If you want to change your
+desktop environment, you have to edit your ~/.desktop file.
+
+You can also use another script - just modify "UserWindowManager" in the
+sesman config file: /etc/xrdp/sesman.ini.
+
+=== Users permitted to log in: ===
+
+By default, members of the "users" group are permitted to log in.  You can
+change this by editing "TerminalServerUsers" in the sesman config file.
+
+=== Known bugs: ===
+
+Sesman is not able to run Xvnc backend on the systems using pam_ldap.
