@@ -1,0 +1,88 @@
+#!/bin/sh
+#
+# xrdp		Start/Stop the remote desktop protocol server
+#
+# chkconfig:	2345 60 40
+# description:	Starts the remote desktop protocol server.
+# processname:	xrdp
+# config:	/etc/xrdp/xrdp.ini
+# pidfile:	/var/run/xrdp.pid
+
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Get service config
+[ -f /etc/sysconfig/xrdp ] && . /etc/sysconfig/xrdp
+
+start() {
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/xrdp ]; then
+		msg_starting "xrdp"
+		daemon xrdp </dev/null
+		RETVAL_XRDP=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/xrdp
+
+		msg_starting "sesman"
+		daemon sesman </dev/null
+		RETVAL_SESMAN=$?
+		RETVAL=$RETVAL_XRDP$RETVAL_SESMAN
+		if [ "$RETVAL" == "00" ]; then
+		  touch /var/lock/subsys/xrdp
+		else
+		  msg_stopping "xrdp"
+		  killproc xrdp
+		  msg_stopping "sesman"
+		  killproc sesman
+		fi
+	else
+		msg_already_running "xrdp"
+	fi
+}
+
+stop() {
+	if [ -f /var/lock/subsys/xrdp ]; then
+		msg_stopping "xrdp"
+		killproc xrdp
+		msg_stopping "sesman"
+		killproc sesman
+		rm -f /var/lock/subsys/xrdp
+	else
+		msg_not_running "xrdp"
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  status)
+	status xrdp
+	exit $?
+	;;
+  restart)
+	stop
+	start
+	;;
+  reload|force-reload)
+	if [ -f /var/lock/subsys/xrdp ]; then
+		msg_reloading "xrdp"
+		killproc xrdp -HUP
+		killproc sesman -HUP
+		RETVAL=$?
+	else
+		msg_not_running "xrdp"
+		exit 7
+	fi
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL
