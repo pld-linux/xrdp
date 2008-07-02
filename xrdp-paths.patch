@@ -1,0 +1,50 @@
+diff -Naur xrdp-0.4.0/xrdp/xrdp_font.c xrdp-0.4.0.new/xrdp/xrdp_font.c
+--- xrdp-0.4.0/xrdp/xrdp_font.c	2007-01-12 05:47:18.000000000 +0100
++++ xrdp-0.4.0.new/xrdp/xrdp_font.c	2008-04-20 03:14:52.000000000 +0200
+@@ -79,7 +79,7 @@
+   self->wm = wm;
+   make_stream(s);
+   init_stream(s, 8192 * 2);
+-  fd = g_file_open("Tahoma-10.fv1");
++  fd = g_file_open("/usr/share/xrdp/Tahoma-10.fv1");
+   if (fd != -1)
+   {
+     b = g_file_read(fd, s->data, 8192 * 2);
+diff -Naur xrdp-0.4.0/xrdp/xrdp_login_wnd.c xrdp-0.4.0.new/xrdp/xrdp_login_wnd.c
+--- xrdp-0.4.0/xrdp/xrdp_login_wnd.c	2007-05-06 08:50:45.000000000 +0200
++++ xrdp-0.4.0.new/xrdp/xrdp_login_wnd.c	2008-04-20 03:14:06.000000000 +0200
+@@ -461,7 +461,7 @@
+ 
+   /* image */
+   but = xrdp_bitmap_create(4, 4, self->screen->bpp, WND_TYPE_IMAGE, self);
+-  xrdp_bitmap_load(but, "xrdp256.bmp", self->palette);
++  xrdp_bitmap_load(but, "/usr/share/xrdp/xrdp256.bmp", self->palette);
+   but->parent = self->screen;
+   but->owner = self->screen;
+   but->left = self->screen->width - but->width;
+@@ -470,7 +470,7 @@
+ 
+   /* image */
+   but = xrdp_bitmap_create(4, 4, self->screen->bpp, WND_TYPE_IMAGE, self);
+-  xrdp_bitmap_load(but, "ad256.bmp", self->palette);
++  xrdp_bitmap_load(but, "/usr/share/xrdp/ad256.bmp", self->palette);
+   but->parent = self->login_window;
+   but->owner = self->login_window;
+   but->left = 10;
+diff -Naur xrdp-0.4.0/xrdp/xrdp_wm.c xrdp-0.4.0.new/xrdp/xrdp_wm.c
+--- xrdp-0.4.0/xrdp/xrdp_wm.c	2007-05-18 05:49:21.000000000 +0200
++++ xrdp-0.4.0.new/xrdp/xrdp_wm.c	2008-04-20 03:14:06.000000000 +0200
+@@ -328,11 +328,11 @@
+   struct xrdp_pointer_item pointer_item;
+ 
+   DEBUG(("sending cursor"));
+-  xrdp_wm_load_pointer(self, "cursor1.cur", pointer_item.data,
++  xrdp_wm_load_pointer(self, "/usr/share/xrdp/cursor1.cur", pointer_item.data,
+                        pointer_item.mask, &pointer_item.x, &pointer_item.y);
+   xrdp_cache_add_pointer_static(self->cache, &pointer_item, 1);
+   DEBUG(("sending cursor"));
+-  xrdp_wm_load_pointer(self, "cursor0.cur", pointer_item.data,
++  xrdp_wm_load_pointer(self, "/usr/share/xrdp/cursor0.cur", pointer_item.data,
+                        pointer_item.mask, &pointer_item.x, &pointer_item.y);
+   xrdp_cache_add_pointer_static(self->cache, &pointer_item, 0);
+   return 0;
