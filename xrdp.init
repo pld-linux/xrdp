@@ -52,24 +52,7 @@ stop() {
 	fi
 }
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
-  	start
-	;;
-  stop)
-  	stop
-	;;
-  status)
-	status xrdp
-	exit $?
-	;;
-  restart)
-	stop
-	start
-	;;
-  reload|force-reload)
+reload() {
 	if [ -f /var/lock/subsys/xrdp ]; then
 		msg_reloading "xrdp"
 		killproc xrdp -HUP
@@ -79,9 +62,43 @@ case "$1" in
 		msg_not_running "xrdp"
 		exit 7
 	fi
+}
+
+condrestart() {
+	if [ -f /var/lock/subsys/xrdp ]; then
+		stop
+		start
+	else
+		msg_not_running "xrdp"
+		RETVAL=$1
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  reload|force-reload)
+	reload
+	;;
+  status)
+	status xrdp
+	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
 	exit 3
 esac
 
