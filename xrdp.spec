@@ -35,8 +35,8 @@ Xrdp uses Xvnc or X11rdp backends to manage the X session.
 
 %description -l pl.UTF-8
 xrdp jest serwerem protokołu Remote Desktop (rdp) dla systemów
-UNIXowych. Do xrdp można się łączyć zarówno programem rdesktop, jak i
-klientami protokołu rdp Microsoftu.
+UNIXowych. Do xrdp można się łączyć zarówno programem rdesktop,
+jak i klientami protokołu rdp Microsoftu.
 
 xrdp używa jako backendu Xvnc lub X11rdp.
 
