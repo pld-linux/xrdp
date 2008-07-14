@@ -18,7 +18,9 @@ Patch0:		%{name}-paths.patch
 Patch1:		%{name}-make.patch
 URL:		http://xrdp.sourceforge.net/
 BuildRequires:	pam-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 Requires:	tightvnc-server
 Requires:	xinitrc-ng
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
