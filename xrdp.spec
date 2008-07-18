@@ -2,12 +2,12 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.4.0
+Version:	0.4.1
 Release:	1
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://dl.sourceforge.net/xrdp/%{name}-%{version}.tar.gz
-# Source0-md5:	dc83d149e385c4cd402d990695691f55
+# Source0-md5:	86a2afcb8d304d5003ecbbdbf46058c0
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.xrdp.ini
