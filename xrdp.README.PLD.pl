@@ -11,7 +11,3 @@ sesmana: /etc/xrdp/sesman.ini.
 
 Aby ograniczyć prawo do korzystania z xrdp do określonej grupy uzytkowników,
 można wpisać tą grupę w pliku /etc/xrdp/sesman.ini w polu TerminalServerUsers.
-
-=== Znane błędy: ===
-
-Sesman nie potrafi uruchomić Xvnc, jeżeli pam korzysta z LDAPa.

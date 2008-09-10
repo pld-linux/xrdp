@@ -10,7 +10,3 @@ sesman config file: /etc/xrdp/sesman.ini.
 
 By default, members of the "users" group are permitted to log in.  You can
 change this by editing "TerminalServerUsers" in the sesman config file.
-
-=== Known bugs: ===
-
-Sesman is not able to run Xvnc backend on the systems using pam_ldap.
