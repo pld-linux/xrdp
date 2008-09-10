@@ -3,7 +3,7 @@ Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
 Version:	0.4.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://dl.sourceforge.net/xrdp/%{name}-%{version}.tar.gz
@@ -16,6 +16,7 @@ Source5:	%{name}.README.PLD
 Source6:	%{name}.README.PLD.pl
 Patch0:		%{name}-paths.patch
 Patch1:		%{name}-make.patch
+Patch2:		%{name}-signals.patch
 URL:		http://xrdp.sourceforge.net/
 BuildRequires:	pam-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -46,6 +47,7 @@ xrdp używa jako backendu Xvnc lub X11rdp.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 install %{SOURCE5} README.PLD
 install %{SOURCE6} README.PLD.pl
