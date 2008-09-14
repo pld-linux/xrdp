@@ -18,6 +18,7 @@ Patch0:		%{name}-paths.patch
 Patch1:		%{name}-make.patch
 Patch2:		%{name}-signals.patch
 URL:		http://xrdp.sourceforge.net/
+BuildRequires:	openssl-devel
 BuildRequires:	pam-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
@@ -54,7 +55,8 @@ install %{SOURCE6} README.PLD.pl
 awk '{gsub("LIBDIR","%{_libdir}"); print}' < %{SOURCE3} > xrdp.ini
 
 %build
-LDFLAGS="-L%{_libdir}" %{__make}
+%{__make} \
+	CC="%{__cc}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
