@@ -92,9 +92,9 @@ install docs/man/sesman.ini.5 $RPM_BUILD_ROOT%{_mandir}/man5/sesman.ini.5
 install docs/man/xrdp.ini.5 $RPM_BUILD_ROOT%{_mandir}/man5/xrdp.ini.5
 
 %post
-	/sbin/ldconfig
-	%service xrdp stop
-	/sbin/chkconfig --add xrdp
+/sbin/ldconfig
+/sbin/chkconfig --add xrdp
+%service xrdp restart "xrdp server"
 
 %postun -p /sbin/ldconfig
 
