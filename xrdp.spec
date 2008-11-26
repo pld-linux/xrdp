@@ -117,10 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_localstatedir}/run
 %{_libdir}/libscp.so
 %{_libdir}/libxrdp.so
-%dir %{_libdir}/xrdp
-%{_libdir}/xrdp/*
-%dir %{_datadir}/xrdp
-%{_datadir}/xrdp/*
+%{_libdir}/xrdp
+%{_datadir}/xrdp
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sesman
 %attr(754,root,root) /etc/rc.d/init.d/xrdp
