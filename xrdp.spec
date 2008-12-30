@@ -1,3 +1,6 @@
+# NOTE:
+# - xrdp-signals.patch has been applied upstream in CVS, so it should be
+#   removed for xrdp > 0.4.1
 #
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
