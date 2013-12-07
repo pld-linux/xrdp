@@ -23,8 +23,8 @@ start() {
 		RETVAL_XRDP=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/xrdp
 
-		msg_starting "sesman"
-		daemon sesman </dev/null
+		msg_starting "xrdp-sesman"
+		daemon xrdp-sesman </dev/null
 		RETVAL_SESMAN=$?
 		RETVAL=$RETVAL_XRDP$RETVAL_SESMAN
 		if [ "$RETVAL" == "00" ]; then
@@ -32,8 +32,8 @@ start() {
 		else
 		  msg_stopping "xrdp"
 		  killproc xrdp
-		  msg_stopping "sesman"
-		  killproc sesman
+		  msg_stopping "xrdp-sesman"
+		  killproc xrdp-sesman
 		fi
 	else
 		msg_already_running "xrdp"
@@ -44,8 +44,8 @@ stop() {
 	if [ -f /var/lock/subsys/xrdp ]; then
 		msg_stopping "xrdp"
 		killproc xrdp
-		msg_stopping "sesman"
-		killproc sesman
+		msg_stopping "xrdp-sesman"
+		killproc xrdp-sesman
 		rm -f /var/lock/subsys/xrdp
 	else
 		msg_not_running "xrdp"
@@ -56,7 +56,7 @@ reload() {
 	if [ -f /var/lock/subsys/xrdp ]; then
 		msg_reloading "xrdp"
 		killproc xrdp -HUP
-		killproc sesman -HUP
+		killproc xrdp-sesman -HUP
 		RETVAL=$?
 	else
 		msg_not_running "xrdp"
@@ -78,10 +78,10 @@ RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-  	start
+	start
 	;;
   stop)
-  	stop
+	stop
 	;;
   restart)
 	stop

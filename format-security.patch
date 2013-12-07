@@ -1,0 +1,11 @@
+--- xrdp-v0.6.1/common/log.c~	2013-11-09 21:11:15.000000000 +0100
++++ xrdp-v0.6.1/common/log.c	2013-12-07 18:38:21.836315352 +0100
+@@ -160,7 +160,7 @@
+   if (l_cfg->enable_syslog  && (lvl <= l_cfg->log_level))
+   {
+     /* log to syslog */
+-    syslog(log_xrdp2syslog(lvl), buff + 20);
++    syslog(log_xrdp2syslog(lvl), "%s", buff + 20);
+   }
+ 
+   if (lvl <= l_cfg->log_level)

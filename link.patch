@@ -1,0 +1,9 @@
+--- xrdp-v0.6.1/common/Makefile.am~	2013-11-09 21:11:15.000000000 +0100
++++ xrdp-v0.6.1/common/Makefile.am	2013-12-07 20:09:12.855037515 +0100
+@@ -23,4 +23,5 @@
+ libcommon_la_LIBADD = \
+   -lcrypto \
+   -lssl \
+-  -lpthread
++  -lpthread \
++  -ldl
