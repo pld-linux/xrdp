@@ -1,0 +1,47 @@
+diff -ur xrdp-0.9.7.orig/common/log.c xrdp-0.9.7/common/log.c
+--- xrdp-0.9.7.orig/common/log.c	2018-06-04 15:01:57.000000000 +0000
++++ xrdp-0.9.7/common/log.c	2018-07-04 15:24:35.592840196 +0000
+@@ -382,11 +382,11 @@
+     /* try to create path if not exist */
+     g_create_path(lc->log_file);
+ 
+-    g_printf("logging configuration:\r\n");
++    /*g_printf("logging configuration:\r\n");
+     g_printf("\tLogFile:       %s\r\n", lc->log_file);
+     g_printf("\tLogLevel:      %i\r\n", lc->log_level);
+     g_printf("\tEnableSyslog:  %i\r\n", lc->enable_syslog);
+-    g_printf("\tSyslogLevel:   %i\r\n", lc->syslog_level);
++    g_printf("\tSyslogLevel:   %i\r\n", lc->syslog_level);*/
+     return LOG_STARTUP_OK;
+ }
+ 
+diff -ur xrdp-0.9.7.orig/xrdp/xrdp.c xrdp-0.9.7/xrdp/xrdp.c
+--- xrdp-0.9.7.orig/xrdp/xrdp.c	2018-06-29 08:06:27.000000000 +0000
++++ xrdp-0.9.7/xrdp/xrdp.c	2018-07-04 15:26:48.163832295 +0000
+@@ -475,7 +475,7 @@
+ 
+     if (startup_params->kill)
+     {
+-        g_writeln("stopping xrdp");
++        /*g_writeln("stopping xrdp");*/
+         /* read the xrdp.pid file */
+         fd = -1;
+ 
+@@ -493,7 +493,7 @@
+             g_memset(text, 0, 32);
+             g_file_read(fd, text, 31);
+             pid = g_atoi(text);
+-            g_writeln("stopping process id %d", pid);
++            /*g_writeln("stopping process id %d", pid);*/
+ 
+             if (pid > 0)
+             {
+@@ -597,7 +597,7 @@
+                    or systemd cannot detect xrdp daemon couldn't start properly */
+                 g_exit(1);
+             }
+-            g_writeln("daemon process %d started ok", pid);
++            /*g_writeln("daemon process %d started ok", pid);*/
+             /* exit, this is the main process */
+             g_deinit();
+             g_exit(0);

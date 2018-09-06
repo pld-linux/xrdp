@@ -9,5 +9,5 @@ sesmana: /etc/xrdp/sesman.ini.
 
 === Uprawnieni użytkownicy: ===
 
-Aby ograniczyć prawo do korzystania z xrdp do określonej grupy uzytkowników,
-można wpisać tą grupę w pliku /etc/xrdp/sesman.ini w polu TerminalServerUsers.
+Domyślnie tylko użytkownicy należący do grupy xrdp mają prawo logowania. Można
+zmienić tą grupę w pliku /etc/xrdp/sesman.ini w polu TerminalServerUsers.

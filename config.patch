@@ -1,0 +1,187 @@
+diff -ur xrdp-0.9.7.orig/sesman/sesman.ini xrdp-0.9.7/sesman/sesman.ini
+--- xrdp-0.9.7.orig/sesman/sesman.ini	2018-06-29 08:18:27.000000000 +0000
++++ xrdp-0.9.7/sesman/sesman.ini	2018-09-06 09:10:42.289218472 +0000
+@@ -12,13 +12,13 @@
+ ReconnectScript=reconnectwm.sh
+ 
+ [Security]
+-AllowRootLogin=true
++AllowRootLogin=false
+ MaxLoginRetry=4
+-TerminalServerUsers=tsusers
+-TerminalServerAdmins=tsadmins
++TerminalServerUsers=xrdp
++TerminalServerAdmins=root
+ ; When AlwaysGroupCheck=false access will be permitted
+ ; if the group TerminalServerUsers is not defined.
+-AlwaysGroupCheck=false
++AlwaysGroupCheck=true
+ 
+ [Sessions]
+ ;; X11DisplayOffset - x11 display number offset
+@@ -55,10 +55,10 @@
+ Policy=Default
+ 
+ [Logging]
+-LogFile=xrdp-sesman.log
+-LogLevel=DEBUG
++LogFile=/dev/null
++LogLevel=INFO
+ EnableSyslog=1
+-SyslogLevel=DEBUG
++SyslogLevel=INFO
+ 
+ ;
+ ; Session definitions - startup command-line parameters for each session type
+@@ -81,8 +81,8 @@
+ param=-noreset
+ param=-nolisten
+ param=tcp
+-param=-logfile
+-param=.xorgxrdp.%s.log
++#param=-logfile
++#param=.xorgxrdp.%s.log
+ 
+ [X11rdp]
+ param=X11rdp
+diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
+--- xrdp-0.9.7.orig/xrdp/xrdp.ini	2018-06-29 08:18:27.000000000 +0000
++++ xrdp-0.9.7/xrdp/xrdp.ini	2018-09-06 09:13:13.540216769 +0000
+@@ -4,6 +4,8 @@
+ 
+ ; fork a new process for each incoming connection
+ fork=true
++; IP address to listen
++;address=127.0.0.1
+ ; tcp port to listen
+ port=3389
+ ; 'port' above should be connected to with vsock instead of tcp
+@@ -118,10 +120,10 @@
+ ls_btn_cancel_height=30
+ 
+ [Logging]
+-LogFile=xrdp.log
+-LogLevel=DEBUG
++LogFile=/dev/null
++LogLevel=INFO
+ EnableSyslog=true
+-SyslogLevel=DEBUG
++SyslogLevel=INFO
+ ; LogLevel and SysLogLevel could by any of: core, error, warning, info or debug
+ 
+ [Channels]
+@@ -153,24 +155,24 @@
+ ; Some session types such as Xorg, X11rdp and Xvnc start a display server.
+ ; Startup command-line parameters for the display server are configured
+ ; in sesman.ini. See and configure also sesman.ini.
+-[Xorg]
+-name=Xorg
+-lib=libxup.so
+-username=ask
+-password=ask
+-ip=127.0.0.1
+-port=-1
+-code=20
+-
+-[X11rdp]
+-name=X11rdp
+-lib=libxup.so
+-username=ask
+-password=ask
+-ip=127.0.0.1
+-port=-1
+-xserverbpp=24
+-code=10
++#[Xorg]
++#name=Xorg
++#lib=libxup.so
++#username=ask
++#password=ask
++#ip=127.0.0.1
++#port=-1
++#code=20
++
++#[X11rdp]
++#name=X11rdp
++#lib=libxup.so
++#username=ask
++#password=ask
++#ip=127.0.0.1
++#port=-1
++#xserverbpp=24
++#code=10
+ 
+ [Xvnc]
+ name=Xvnc
+@@ -182,43 +184,43 @@
+ #xserverbpp=24
+ #delay_ms=2000
+ 
+-[console]
+-name=console
+-lib=libvnc.so
+-ip=127.0.0.1
+-port=5900
+-username=na
+-password=ask
++#[console]
++#name=console
++#lib=libvnc.so
++#ip=127.0.0.1
++#port=5900
++#username=na
++#password=ask
+ #delay_ms=2000
+ 
+-[vnc-any]
+-name=vnc-any
+-lib=libvnc.so
+-ip=ask
+-port=ask5900
+-username=na
+-password=ask
++#[vnc-any]
++#name=vnc-any
++#lib=libvnc.so
++#ip=ask
++#port=ask5900
++#username=na
++#password=ask
+ #pamusername=asksame
+ #pampassword=asksame
+ #pamsessionmng=127.0.0.1
+ #delay_ms=2000
+ 
+-[sesman-any]
+-name=sesman-any
+-lib=libvnc.so
+-ip=ask
+-port=-1
+-username=ask
+-password=ask
++#[sesman-any]
++#name=sesman-any
++#lib=libvnc.so
++#ip=ask
++#port=-1
++#username=ask
++#password=ask
+ #delay_ms=2000
+ 
+-[neutrinordp-any]
+-name=neutrinordp-any
+-lib=libxrdpneutrinordp.so
+-ip=ask
+-port=ask3389
+-username=ask
+-password=ask
++#[neutrinordp-any]
++#name=neutrinordp-any
++#lib=libxrdpneutrinordp.so
++#ip=ask
++#port=ask3389
++#username=ask
++#password=ask
+ 
+ ; You can override the common channel settings for each session type
+ #channel.rdpdr=true

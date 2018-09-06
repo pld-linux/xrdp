@@ -8,5 +8,5 @@ sesman config file: /etc/xrdp/sesman.ini.
 
 === Users permitted to log in: ===
 
-By default, members of the "users" group are permitted to log in.  You can
+By default, members of the "xrdp" group are permitted to log in.  You can
 change this by editing "TerminalServerUsers" in the sesman config file.
