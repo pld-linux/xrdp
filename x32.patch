@@ -1,0 +1,44 @@
+--- xrdp-0.9.8/librfxcodec/m4/nasm.m4~	2017-03-14 03:31:16.000000000 +0100
++++ xrdp-0.9.8/librfxcodec/m4/nasm.m4	2018-10-22 23:14:49.068774820 +0200
+@@ -30,6 +30,9 @@
+   linux*aout*)
+     objfmt='a.out'
+   ;;
++  linux-gnux32)
++    objfmt='ELFX32'
++  ;;
+   linux*)
+     case "$host_cpu" in
+       x86_64)
+@@ -95,6 +98,7 @@
+   BSD-a.out)  NAFLAGS='-faoutb -DAOUT';;
+   ELF)        NAFLAGS='-felf -DELF';;
+   ELF64)      NAFLAGS='-felf64 -DELF -D__x86_64__';;
++  ELFX32)     NAFLAGS='-felfx32 -DELF -D__x86_64__';;
+   RDF)        NAFLAGS='-frdf -DRDF';;
+   Mach-O)     NAFLAGS='-fmacho -DMACHO';;
+   Mach-O64)   NAFLAGS='-fmacho64 -DMACHO -D__x86_64__';;
+--- xrdp-0.9.8/librfxcodec/src/nasm_lt.sh~	2017-03-14 03:31:16.000000000 +0100
++++ xrdp-0.9.8/librfxcodec/src/nasm_lt.sh	2018-10-22 23:15:27.400841584 +0200
+@@ -11,7 +11,7 @@
+                 pic=yes
+             fi
+             ;;
+-        -f|-fbin|-faout|-faoutb|-fcoff|-felf|-felf64|-fas86| \
++        -f|-fbin|-faout|-faoutb|-fcoff|-felf|-felf64|-felfx32|-fas86| \
+         -fobj|-fwin32|-fwin64|-frdf|-fieee|-fmacho|-fmacho64)
+             # it's a file format specifier for nasm.
+             command="$command $1"
+--- xrdp-0.9.8/librfxcodec/src/common.asm~	2017-09-26 08:22:51.000000000 +0200
++++ xrdp-0.9.8/librfxcodec/src/common.asm	2018-10-22 23:48:37.178222237 +0200
+@@ -34,6 +34,10 @@
+ %define is_elf 1
+ %endif
+ 
++%ifidn __OUTPUT_FORMAT__,elfx32
++%define is_elf 1
++%endif
++
+ ; Detect Mach-O formats
+ %ifidn __OUTPUT_FORMAT__,macho
+ %define is_macho 1

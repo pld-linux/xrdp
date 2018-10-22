@@ -1,8 +1,12 @@
+#
+# TODO:
+#   - package systemd stuff
+#
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
 Version:	0.9.8
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
@@ -14,6 +18,7 @@ Source4:	%{name}.README.PLD.pl
 Source5:	startwm.sh
 Patch0:		config.patch
 Patch1:		quiet.patch
+Patch2:		x32.patch
 URL:		http://www.xrdp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -89,6 +94,7 @@ Statyczne biblioteki xrdp.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 install %{SOURCE3} README.PLD
 install %{SOURCE4} README.PLD.pl
@@ -99,8 +105,15 @@ install %{SOURCE4} README.PLD.pl
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+cd librfxcodec
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ..
 %configure
-%{__make}
+%{__make} V=1
 
 %install
 rm -rf $RPM_BUILD_ROOT
