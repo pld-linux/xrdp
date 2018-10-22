@@ -1,12 +1,12 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.9.7
-Release:	2
+Version:	0.9.8
+Release:	1
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	5f8074a7bed8b45d43ef028748a86755
+# Source0-md5:	88a3c075583ccedf2183098478b57c17
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -17,7 +17,6 @@ Patch1:		quiet.patch
 URL:		http://www.xrdp.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	freerdp-devel
 BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pam-devel
@@ -100,8 +99,7 @@ install %{SOURCE4} README.PLD.pl
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-%configure \
-	--enable-freerdp1
+%configure
 %{__make}
 
 %install
