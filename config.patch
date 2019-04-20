@@ -16,9 +16,9 @@ diff -ur xrdp-0.9.7.orig/sesman/sesman.ini xrdp-0.9.7/sesman/sesman.ini
  ; if the group TerminalServerUsers is not defined.
 -AlwaysGroupCheck=false
 +AlwaysGroupCheck=true
- 
- [Sessions]
- ;; X11DisplayOffset - x11 display number offset
+ ; When RestrictOutboundClipboard=true clipboard from the
+ ; server is not pushed to the client.
+ RestrictOutboundClipboard=false
 @@ -55,10 +55,10 @@
  Policy=Default
  
@@ -70,7 +70,7 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
  ; LogLevel and SysLogLevel could by any of: core, error, warning, info or debug
  
  [Channels]
-@@ -153,24 +155,24 @@
+@@ -155,14 +155,14 @@
  ; Some session types such as Xorg, X11rdp and Xvnc start a display server.
  ; Startup command-line parameters for the display server are configured
  ; in sesman.ini. See and configure also sesman.ini.
@@ -82,16 +82,6 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
 -ip=127.0.0.1
 -port=-1
 -code=20
--
--[X11rdp]
--name=X11rdp
--lib=libxup.so
--username=ask
--password=ask
--ip=127.0.0.1
--port=-1
--xserverbpp=24
--code=10
 +#[Xorg]
 +#name=Xorg
 +#lib=libxup.so
@@ -99,38 +89,12 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
 +#password=ask
 +#ip=127.0.0.1
 +#port=-1
-+#code=20
-+
-+#[X11rdp]
-+#name=X11rdp
-+#lib=libxup.so
-+#username=ask
-+#password=ask
-+#ip=127.0.0.1
-+#port=-1
-+#xserverbpp=24
-+#code=10
++#portcode=20
  
  [Xvnc]
  name=Xvnc
-@@ -182,43 +184,43 @@
+@@ -174,25 +174,25 @@
  #xserverbpp=24
- #delay_ms=2000
- 
--[console]
--name=console
--lib=libvnc.so
--ip=127.0.0.1
--port=5900
--username=na
--password=ask
-+#[console]
-+#name=console
-+#lib=libvnc.so
-+#ip=127.0.0.1
-+#port=5900
-+#username=na
-+#password=ask
  #delay_ms=2000
  
 -[vnc-any]
@@ -150,22 +114,6 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
  #pamusername=asksame
  #pampassword=asksame
  #pamsessionmng=127.0.0.1
- #delay_ms=2000
- 
--[sesman-any]
--name=sesman-any
--lib=libvnc.so
--ip=ask
--port=-1
--username=ask
--password=ask
-+#[sesman-any]
-+#name=sesman-any
-+#lib=libvnc.so
-+#ip=ask
-+#port=-1
-+#username=ask
-+#password=ask
  #delay_ms=2000
  
 -[neutrinordp-any]

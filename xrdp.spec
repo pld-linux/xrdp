@@ -5,12 +5,12 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.9.8
-Release:	2
+Version:	0.9.10
+Release:	1
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	88a3c075583ccedf2183098478b57c17
+# Source0-md5:	f2cb9b1f502b88c958de3a424ed6baa9
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
