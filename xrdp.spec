@@ -20,17 +20,31 @@ Patch0:		config.patch
 Patch1:		quiet.patch
 Patch2:		x32.patch
 URL:		http://www.xrdp.org/
-BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.65
+BuildRequires:	automake >= 1:1.7.2
+BuildRequires:	fdk-aac-devel >= 0.1.0
+BuildRequires:	lame-libs-devel
+BuildRequires:	libfuse-devel >= 2.6
+BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libtool
-BuildRequires:	openssl-devel
+BuildRequires:	openssl-devel >= 0.9.8
+BuildRequires:	opus-devel
 BuildRequires:	pam-devel
+BuildRequires:	pixman-devel >= 0.1.0
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	systemd-units
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXfixes-devel
+BuildRequires:	xorg-lib-libXrandr-devel
 Requires:	xrdp-libs = %{version}-%{release}
 Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	/usr/bin/Xvnc
+Requires:	fdk-aac >= 0.1.0
+Requires:	libfuse >= 2.6
+Requires:	openssl >= 0.9.8
+Requires:	pixman >= 0.1.0
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
 Requires:	xinitrc-ng
@@ -116,7 +130,13 @@ cd librfxcodec
 %{__automake}
 cd ..
 %configure \
-	--enable-pam-config=redhat
+	--enable-fdkaac \
+	--enable-fuse \
+	--enable-mp3lame \
+	--enable-opus \
+	--enable-pam-config=redhat \
+	--enable-pixman \
+	--enable-tjpeg
 %{__make} V=1
 
 %install
