@@ -37,9 +37,9 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.c xrdp-0.9.7/xrdp/xrdp.c
              if (pid > 0)
              {
 @@ -597,7 +597,7 @@
-                    or systemd cannot detect xrdp daemon couldn't start properly */
-                 g_exit(1);
-             }
+ 
+         if (0 != pid)
+         {
 -            g_writeln("daemon process %d started ok", pid);
 +            /*g_writeln("daemon process %d started ok", pid);*/
              /* exit, this is the main process */

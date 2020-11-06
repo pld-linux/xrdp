@@ -53,9 +53,9 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
  fork=true
 +; IP address to listen
 +;address=127.0.0.1
- ; tcp port to listen
- port=3389
- ; 'port' above should be connected to with vsock instead of tcp
+ 
+ ; ports to listen on, number alone means listen on all interfaces
+ ; 0.0.0.0 or :: if ipv6 is configured
 @@ -118,10 +120,10 @@
  ls_btn_cancel_height=30
  

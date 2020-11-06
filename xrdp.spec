@@ -5,12 +5,12 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.9.10
+Version:	0.9.14
 Release:	1
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	f2cb9b1f502b88c958de3a424ed6baa9
+# Source0-md5:	6066c2d8d2bb0883f14ab2fafb968404
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -26,10 +26,13 @@ BuildRequires:	libtool
 BuildRequires:	openssl-devel
 BuildRequires:	pam-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	systemd-units
 Requires:	xrdp-libs = %{version}-%{release}
 Requires(post,preun):	/sbin/chkconfig
+Requires(post,preun,postun):	systemd-units >= 38
 Requires:	/usr/bin/Xvnc
 Requires:	rc-scripts
+Requires:	systemd-units >= 38
 Requires:	xinitrc-ng
 Requires(postun):       /usr/sbin/groupdel
 Requires(pre):  /usr/bin/getgid
@@ -112,7 +115,8 @@ cd librfxcodec
 %{__autoheader}
 %{__automake}
 cd ..
-%configure
+%configure \
+	--enable-pam-config=redhat
 %{__make} V=1
 
 %install
@@ -125,7 +129,7 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/{%{name},pam.d,rc.d/init.d,security}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/xrdp
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sesman
 %{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/xrdp-sesman
-%{__ln} -s sesman $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/xrdp-sesman
+%{__ln_s} sesman $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/xrdp-sesman
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/lib*.{a,la}
 %{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/xrdp/startwm.sh
 install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/xrdp/startwm.sh
@@ -138,17 +142,20 @@ install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/xrdp/startwm.sh
 %post
 /sbin/chkconfig --add xrdp
 %service xrdp restart "xrdp server"
+%systemd_post xrdp.service xrdp-sesman.service
 
 %preun
 if [ "$1" = "0" ]; then
 	%service xrdp stop
 	/sbin/chkconfig --del xrdp
 fi
+%systemd_preun xrdp.service xrdp-sesman.service
 
 %postun
 if [ "$1" = "0" ]; then
 	%groupremove xrdp
 fi
+%systemd_reload
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -193,6 +200,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/xrdp/libxrdp.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxrdpapi.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxup.so*
+%{systemdunitdir}/xrdp.service
+%{systemdunitdir}/xrdp-sesman.service
 %dir %{_datadir}/xrdp
 %{_datadir}/xrdp/ad24b.bmp
 %{_datadir}/xrdp/ad256.bmp
@@ -222,6 +231,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libpainter.so
 %attr(755,root,root) %{_libdir}/librfxencode.so
+%{_includedir}/ms-*.h
 %{_includedir}/painter.h
 %{_includedir}/rfxcodec_common.h
 %{_includedir}/rfxcodec_decode.h
