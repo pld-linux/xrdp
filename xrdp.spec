@@ -1,14 +1,11 @@
-#
-# TODO:
-#   - package systemd stuff
-#
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
 Version:	0.9.14
-Release:	1
-License:	GPL
+Release:	2
+License:	Apache v2.0
 Group:		X11/Applications/Networking
+#Source0Download: https://github.com/neutrinolabs/xrdp/releases
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	6066c2d8d2bb0883f14ab2fafb968404
 Source1:	%{name}.init
@@ -20,7 +17,7 @@ Patch0:		config.patch
 Patch1:		quiet.patch
 Patch2:		x32.patch
 Patch3:		%{name}-int_ptr.patch
-URL:		http://www.xrdp.org/
+URL:		http://xrdp.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.7.2
 BuildRequires:	fdk-aac-devel >= 0.1.0
@@ -38,9 +35,12 @@ BuildRequires:	systemd-units
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXfixes-devel
 BuildRequires:	xorg-lib-libXrandr-devel
-Requires:	xrdp-libs = %{version}-%{release}
 Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun,postun):	systemd-units >= 38
+Requires(postun):	/usr/sbin/groupdel
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	/usr/bin/Xvnc
 Requires:	fdk-aac >= 0.1.0
 Requires:	libfuse >= 2.6
@@ -49,9 +49,6 @@ Requires:	pixman >= 0.1.0
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
 Requires:	xinitrc-ng
-Requires(postun):       /usr/sbin/groupdel
-Requires(pre):  /usr/bin/getgid
-Requires(pre):  /usr/sbin/groupadd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -71,41 +68,39 @@ klientami protokołu rdp Microsoftu.
 
 xrdp używa jako backendu Xvnc lub X11rdp.
 
-%package -n xrdp-libs
-Summary:        xrdp shared libraries
-Summary(pl.UTF-8):      Biblioteki współdzielone xrdp
-Group:          Libraries
-Requires(post,postun):	/sbin/ldconfig
+%package libs
+Summary:	xrdp shared libraries
+Summary(pl.UTF-8):	Biblioteki współdzielone xrdp
+Group:		Libraries
 
-%description -n xrdp-libs
+%description libs
 xrdp shared libraries.
 
-%description -n xrdp-libs -l pl.UTF-8
+%description libs -l pl.UTF-8
 Biblioteki współdzielone xrdp.
 
-%package -n xrdp-devel
-Summary:        Header files for xrdp libraries
-Summary(pl.UTF-8):      Pliki nagłówkowe bibliotek xrdp
-Group:          Development/Libraries
-Requires:       xrdp-libs = %{version}-%{release}
+%package devel
+Summary:	Header files for xrdp libraries
+Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek xrdp
+Group:		Development/Libraries
+Requires:	%{name}-libs = %{version}-%{release}
 
-%description -n xrdp-devel
+%description devel
 Header files for xrdp libraries.
 
-%description -n xrdp-devel -l pl.UTF-8
+%description devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek xrdp.
 
-%package -n xrdp-static
-Summary:        Static xrdp libraries
-Summary(pl.UTF-8):      Statyczne biblioteki xrdp
-License:        LGPL v2.1
-Group:          Development/Libraries
-Requires:       xrdp-devel = %{version}-%{release}
+%package static
+Summary:	Static xrdp libraries
+Summary(pl.UTF-8):	Statyczne biblioteki xrdp
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
 
-%description -n xrdp-static
+%description static
 Static xrdp libraries.
 
-%description -n xrdp-static -l pl.UTF-8
+%description static -l pl.UTF-8
 Statyczne biblioteki xrdp.
 
 %prep
@@ -143,20 +138,23 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{%{name},pam.d,rc.d/init.d,security}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/%{name},/etc/{pam.d,rc.d/init.d,security}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/xrdp
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sesman
-%{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/xrdp-sesman
-%{__ln_s} sesman $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/xrdp-sesman
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/lib*.{a,la}
-%{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/xrdp/startwm.sh
-install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/xrdp/startwm.sh
-
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/xrdp
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sesman
+%{__rm} $RPM_BUILD_ROOT/etc/pam.d/xrdp-sesman
+%{__ln_s} sesman $RPM_BUILD_ROOT/etc/pam.d/xrdp-sesman
 :> $RPM_BUILD_ROOT/etc/security/blacklist.sesman
+
+%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/startwm.sh
+install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/startwm.sh
+
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/lib*.{a,la}
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
 
 %pre
 %groupadd -g 183 xrdp
@@ -182,8 +180,8 @@ fi
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-n xrdp-libs -p /sbin/ldconfig
-%postun	-n xrdp-libs -p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -246,8 +244,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libpainter.so.*.*
-%attr(755,root,root) %{_libdir}/librfxencode.so.*.*
+%attr(755,root,root) %{_libdir}/libpainter.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libpainter.so.0
+%attr(755,root,root) %{_libdir}/librfxencode.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/librfxencode.so.0
 
 %files devel
 %defattr(644,root,root,755)
