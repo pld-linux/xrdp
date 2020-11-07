@@ -19,6 +19,7 @@ Source5:	startwm.sh
 Patch0:		config.patch
 Patch1:		quiet.patch
 Patch2:		x32.patch
+Patch3:		%{name}-int_ptr.patch
 URL:		http://www.xrdp.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.7.2
@@ -112,6 +113,7 @@ Statyczne biblioteki xrdp.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 install %{SOURCE3} README.PLD
 install %{SOURCE4} README.PLD.pl
