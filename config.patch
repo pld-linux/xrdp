@@ -1,7 +1,7 @@
-diff -ur xrdp-0.9.7.orig/sesman/sesman.ini xrdp-0.9.7/sesman/sesman.ini
---- xrdp-0.9.7.orig/sesman/sesman.ini	2018-06-29 08:18:27.000000000 +0000
-+++ xrdp-0.9.7/sesman/sesman.ini	2018-09-06 09:10:42.289218472 +0000
-@@ -12,13 +12,13 @@
+diff -urNp -x '*.orig' xrdp-0.9.14.org/sesman/sesman.ini xrdp-0.9.14/sesman/sesman.ini
+--- xrdp-0.9.14.org/sesman/sesman.ini	2020-08-31 08:33:40.000000000 +0200
++++ xrdp-0.9.14/sesman/sesman.ini	2021-10-03 00:01:41.525736996 +0200
+@@ -12,13 +12,13 @@ DefaultWindowManager=startwm.sh
  ReconnectScript=reconnectwm.sh
  
  [Security]
@@ -19,7 +19,7 @@ diff -ur xrdp-0.9.7.orig/sesman/sesman.ini xrdp-0.9.7/sesman/sesman.ini
  ; When RestrictOutboundClipboard=true clipboard from the
  ; server is not pushed to the client.
  RestrictOutboundClipboard=false
-@@ -55,10 +55,10 @@
+@@ -64,10 +64,10 @@ IdleTimeLimit=0
  Policy=Default
  
  [Logging]
@@ -33,7 +33,7 @@ diff -ur xrdp-0.9.7.orig/sesman/sesman.ini xrdp-0.9.7/sesman/sesman.ini
  
  ;
  ; Session definitions - startup command-line parameters for each session type
-@@ -81,8 +81,8 @@
+@@ -92,8 +92,8 @@ param=xrdp/xorg.conf
  param=-noreset
  param=-nolisten
  param=tcp
@@ -42,12 +42,12 @@ diff -ur xrdp-0.9.7.orig/sesman/sesman.ini xrdp-0.9.7/sesman/sesman.ini
 +#param=-logfile
 +#param=.xorgxrdp.%s.log
  
- [X11rdp]
- param=X11rdp
-diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
---- xrdp-0.9.7.orig/xrdp/xrdp.ini	2018-06-29 08:18:27.000000000 +0000
-+++ xrdp-0.9.7/xrdp/xrdp.ini	2018-09-06 09:13:13.540216769 +0000
-@@ -4,6 +4,8 @@
+ [Xvnc]
+ param=Xvnc
+diff -urNp -x '*.orig' xrdp-0.9.14.org/xrdp/xrdp.ini xrdp-0.9.14/xrdp/xrdp.ini
+--- xrdp-0.9.14.org/xrdp/xrdp.ini	2020-08-31 08:33:40.000000000 +0200
++++ xrdp-0.9.14/xrdp/xrdp.ini	2021-10-03 00:01:41.525736996 +0200
+@@ -4,6 +4,8 @@ ini_version=1
  
  ; fork a new process for each incoming connection
  fork=true
@@ -56,7 +56,7 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
  
  ; ports to listen on, number alone means listen on all interfaces
  ; 0.0.0.0 or :: if ipv6 is configured
-@@ -118,10 +120,10 @@
+@@ -143,10 +145,10 @@ ls_btn_cancel_width=85
  ls_btn_cancel_height=30
  
  [Logging]
@@ -70,7 +70,7 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
  ; LogLevel and SysLogLevel could by any of: core, error, warning, info or debug
  
  [Channels]
-@@ -155,14 +155,14 @@
+@@ -178,14 +180,14 @@ tcutils=true
  ; Some session types such as Xorg, X11rdp and Xvnc start a display server.
  ; Startup command-line parameters for the display server are configured
  ; in sesman.ini. See and configure also sesman.ini.
@@ -93,9 +93,9 @@ diff -ur xrdp-0.9.7.orig/xrdp/xrdp.ini xrdp-0.9.7/xrdp/xrdp.ini
  
  [Xvnc]
  name=Xvnc
-@@ -174,25 +174,25 @@
- #xserverbpp=24
- #delay_ms=2000
+@@ -201,25 +203,25 @@ port=-1
+ #disabled_encodings_mask=0
+ 
  
 -[vnc-any]
 -name=vnc-any
