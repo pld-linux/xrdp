@@ -1,7 +1,6 @@
-diff -urNp -x '*.orig' xrdp-0.9.14.org/sesman/sesman.ini xrdp-0.9.14/sesman/sesman.ini
---- xrdp-0.9.14.org/sesman/sesman.ini	2020-08-31 08:33:40.000000000 +0200
-+++ xrdp-0.9.14/sesman/sesman.ini	2021-10-03 00:01:41.525736996 +0200
-@@ -12,13 +12,13 @@ DefaultWindowManager=startwm.sh
+--- xrdp-0.9.18.1/sesman/sesman.ini~	2022-02-07 13:41:18.000000000 +0000
++++ xrdp-0.9.18.1/sesman/sesman.ini	2022-02-22 17:17:33.978363685 +0000
+@@ -12,13 +12,13 @@
  ReconnectScript=reconnectwm.sh
  
  [Security]
@@ -19,21 +18,20 @@ diff -urNp -x '*.orig' xrdp-0.9.14.org/sesman/sesman.ini xrdp-0.9.14/sesman/sesm
  ; When RestrictOutboundClipboard=true clipboard from the
  ; server is not pushed to the client.
  RestrictOutboundClipboard=false
-@@ -64,10 +64,10 @@ IdleTimeLimit=0
- Policy=Default
+@@ -65,10 +65,10 @@
  
  [Logging]
+ ; Note: Log levels can be any of: core, error, warning, info, debug, or trace
 -LogFile=xrdp-sesman.log
--LogLevel=DEBUG
 +LogFile=/dev/null
-+LogLevel=INFO
- EnableSyslog=1
--SyslogLevel=DEBUG
+ LogLevel=INFO
+ EnableSyslog=true
+-#SyslogLevel=INFO
 +SyslogLevel=INFO
- 
- ;
- ; Session definitions - startup command-line parameters for each session type
-@@ -92,8 +92,8 @@ param=xrdp/xorg.conf
+ #EnableConsole=false
+ #ConsoleLevel=INFO
+ #EnableProcessId=false
+@@ -102,8 +102,8 @@
  param=-noreset
  param=-nolisten
  param=tcp
@@ -44,10 +42,9 @@ diff -urNp -x '*.orig' xrdp-0.9.14.org/sesman/sesman.ini xrdp-0.9.14/sesman/sesm
  
  [Xvnc]
  param=Xvnc
-diff -urNp -x '*.orig' xrdp-0.9.14.org/xrdp/xrdp.ini xrdp-0.9.14/xrdp/xrdp.ini
---- xrdp-0.9.14.org/xrdp/xrdp.ini	2020-08-31 08:33:40.000000000 +0200
-+++ xrdp-0.9.14/xrdp/xrdp.ini	2021-10-03 00:01:41.525736996 +0200
-@@ -4,6 +4,8 @@ ini_version=1
+--- xrdp-0.9.18.1/xrdp/xrdp.ini~	2022-02-07 13:41:27.000000000 +0000
++++ xrdp-0.9.18.1/xrdp/xrdp.ini	2022-02-22 17:22:28.239696963 +0000
+@@ -4,6 +4,8 @@
  
  ; fork a new process for each incoming connection
  fork=true
@@ -56,21 +53,20 @@ diff -urNp -x '*.orig' xrdp-0.9.14.org/xrdp/xrdp.ini xrdp-0.9.14/xrdp/xrdp.ini
  
  ; ports to listen on, number alone means listen on all interfaces
  ; 0.0.0.0 or :: if ipv6 is configured
-@@ -143,10 +145,10 @@ ls_btn_cancel_width=85
- ls_btn_cancel_height=30
+@@ -178,10 +180,10 @@
  
  [Logging]
+ ; Note: Log levels can be any of: core, error, warning, info, debug, or trace
 -LogFile=xrdp.log
--LogLevel=DEBUG
 +LogFile=/dev/null
-+LogLevel=INFO
+ LogLevel=INFO
  EnableSyslog=true
--SyslogLevel=DEBUG
+-#SyslogLevel=INFO
 +SyslogLevel=INFO
- ; LogLevel and SysLogLevel could by any of: core, error, warning, info or debug
- 
- [Channels]
-@@ -178,14 +180,14 @@ tcutils=true
+ #EnableConsole=false
+ #ConsoleLevel=INFO
+ #EnableProcessId=false
+@@ -218,14 +220,14 @@
  ; Some session types such as Xorg, X11rdp and Xvnc start a display server.
  ; Startup command-line parameters for the display server are configured
  ; in sesman.ini. See and configure also sesman.ini.
@@ -89,14 +85,14 @@ diff -urNp -x '*.orig' xrdp-0.9.14.org/xrdp/xrdp.ini xrdp-0.9.14/xrdp/xrdp.ini
 +#password=ask
 +#ip=127.0.0.1
 +#port=-1
-+#portcode=20
++#code=20
  
  [Xvnc]
  name=Xvnc
-@@ -201,25 +203,25 @@ port=-1
- #disabled_encodings_mask=0
- 
- 
+@@ -247,13 +249,13 @@
+ ; Generic VNC Proxy
+ ; Tailor this to specific hosts and VNC instances by specifying an ip
+ ; and port and setting a suitable name.
 -[vnc-any]
 -name=vnc-any
 -lib=libvnc.so
@@ -114,22 +110,26 @@ diff -urNp -x '*.orig' xrdp-0.9.14.org/xrdp/xrdp.ini xrdp-0.9.14/xrdp/xrdp.ini
  #pamusername=asksame
  #pampassword=asksame
  #pamsessionmng=127.0.0.1
- #delay_ms=2000
- 
+@@ -262,15 +264,15 @@
+ ; Generic RDP proxy using NeutrinoRDP
+ ; Tailor this to specific hosts by specifying an ip and port and setting
+ ; a suitable name.
 -[neutrinordp-any]
 -name=neutrinordp-any
++#[neutrinordp-any]
++#name=neutrinordp-any
+ ; To use this section, you should build xrdp with configure option
+ ; --enable-neutrinordp.
 -lib=libxrdpneutrinordp.so
 -ip=ask
 -port=ask3389
 -username=ask
 -password=ask
-+#[neutrinordp-any]
-+#name=neutrinordp-any
 +#lib=libxrdpneutrinordp.so
 +#ip=ask
 +#port=ask3389
 +#username=ask
 +#password=ask
- 
- ; You can override the common channel settings for each session type
- #channel.rdpdr=true
+ ; Uncomment the following lines to enable PAM authentication for proxy
+ ; connections.
+ #pamusername=ask
