@@ -1,13 +1,13 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.9.18.1
-Release:	0.1
+Version:	0.9.19
+Release:	1
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	5cd5817d02e1ad038d2870542f603709
+# Source0-md5:	2e60a2e874f95723a4cdd0b466bbe7e4
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -16,12 +16,12 @@ Source5:	startwm.sh
 Patch0:		config.patch
 Patch1:		quiet.patch
 Patch2:		x32.patch
-Patch3:		%{name}-int_ptr.patch
-Patch4:		openssl3.patch
+Patch3:		linker.patch
 URL:		http://xrdp.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.7.2
 BuildRequires:	fdk-aac-devel >= 0.1.0
+BuildRequires:	imlib2-devel
 BuildRequires:	lame-libs-devel
 BuildRequires:	libfuse-devel >= 2.6
 BuildRequires:	libjpeg-turbo-devel
@@ -110,25 +110,13 @@ Statyczne biblioteki xrdp.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p1
-%patch4 -p1
+%patch3 -p1
 
 install %{SOURCE3} README.PLD
 install %{SOURCE4} README.PLD.pl
 
 %build
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-cd librfxcodec
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-cd ..
+autoreconf -fv
 %configure \
 	--enable-fdkaac \
 	--enable-fuse \
@@ -136,7 +124,12 @@ cd ..
 	--enable-opus \
 	--enable-pam-config=redhat \
 	--enable-pixman \
-	--enable-tjpeg
+	--enable-tjpeg \
+	--enable-painter \
+	--enable-ipv6 \
+	--enable-vsock \
+	--with-imlib2="yes"
+
 %{__make} V=1
 
 %install
@@ -188,7 +181,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.txt
+%doc COPYING NEWS.md README.md
 %doc README.PLD
 %doc README.PLD.pl
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sesman
