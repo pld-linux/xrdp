@@ -1,9 +1,0 @@
---- xrdp-0.9.19/xrdpapi/Makefile.am~	2020-06-26 11:13:58.000000000 +0000
-+++ xrdp-0.9.19/xrdpapi/Makefile.am	2022-03-22 05:56:04.471233246 +0000
-@@ -13,3 +13,6 @@
- libxrdpapi_la_SOURCES = \
-   xrdpapi.c \
-   xrdpapi.h
-+
-+libxrdpapi_la_LIBADD = \
-+  $(top_builddir)/common/libcommon.la
