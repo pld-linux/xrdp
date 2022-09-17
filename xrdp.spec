@@ -20,7 +20,7 @@ URL:		http://xrdp.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.7.2
 BuildRequires:	fdk-aac-devel >= 0.1.0
-BuildRequires:	imlib2-devel
+BuildRequires:	imlib2-devel >= 1.4.5
 BuildRequires:	lame-libs-devel
 BuildRequires:	libfuse-devel >= 2.6
 BuildRequires:	libjpeg-turbo-devel
@@ -44,6 +44,7 @@ Requires(pre):	/usr/sbin/groupadd
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	/usr/bin/Xvnc
 Requires:	fdk-aac >= 0.1.0
+Requires:	imlib2 >= 1.4.5
 Requires:	libfuse >= 2.6
 Requires:	openssl >= 0.9.8
 Requires:	pixman >= 0.1.0
@@ -114,21 +115,39 @@ install %{SOURCE3} README.PLD
 install %{SOURCE4} README.PLD.pl
 
 %build
-autoreconf -fv
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd libpainter
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ../librfxcodec
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+cd ..
 %configure \
 	--enable-fdkaac \
 	--enable-fuse \
+	--enable-ipv6 \
 	--enable-mp3lame \
 	--enable-opus \
 	--enable-pam-config=redhat \
-	--enable-pixman \
-	--enable-tjpeg \
 	--enable-painter \
-	--enable-ipv6 \
+	--enable-pixman \
+	--disable-silent-rules \
+	--enable-tjpeg \
 	--enable-vsock \
-	--with-imlib2="yes"
+	--with-imlib2
 
-%{__make} V=1
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -179,9 +198,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING NEWS.md README.md
-%doc README.PLD
-%doc README.PLD.pl
+%doc COPYING NEWS.md README.md README.PLD
+%lang(pl) %doc README.PLD.pl
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sesman
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.sesman
 %attr(640,root,root) /etc/pam.d/xrdp-sesman
