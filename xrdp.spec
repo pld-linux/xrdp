@@ -1,13 +1,13 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.9.21
+Version:	0.9.22.1
 Release:	1
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	f72647504d6388dd31be55715c10ffba
+# Source0-md5:	64b012b05ed41a445281adc7903d968e
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -16,7 +16,7 @@ Source5:	startwm.sh
 Patch0:		config.patch
 Patch1:		quiet.patch
 Patch2:		x32.patch
-URL:		http://xrdp.org/
+URL:		https://www.xrdp.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.7.2
 BuildRequires:	fdk-aac-devel >= 0.1.0
