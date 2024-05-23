@@ -1,13 +1,13 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.9.25
+Version:	0.10.0
 Release:	1
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	2003b90ea01b36bf010bfd4c0d91f6f7
+# Source0-md5:	2221e0a307fbf553d6d99416496525ab
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -17,7 +17,7 @@ Patch0:		config.patch
 Patch1:		quiet.patch
 Patch2:		x32.patch
 URL:		https://www.xrdp.org/
-BuildRequires:	autoconf >= 2.65
+BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.7.2
 BuildRequires:	fdk-aac-devel >= 0.1.0
 BuildRequires:	imlib2-devel >= 1.4.5
@@ -41,7 +41,6 @@ Requires(post,preun,postun):	systemd-units >= 38
 Requires(postun):	/usr/sbin/groupdel
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
-Requires:	%{name}-libs = %{version}-%{release}
 Requires:	/usr/bin/Xvnc
 Requires:	fdk-aac >= 0.1.0
 Requires:	imlib2 >= 1.4.5
@@ -51,6 +50,7 @@ Requires:	pixman >= 0.1.0
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
 Requires:	xinitrc-ng
+Obsoletes:	xrdp-libs < 0.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -70,22 +70,10 @@ klientami protokołu rdp Microsoftu.
 
 xrdp używa jako backendu Xvnc lub X11rdp.
 
-%package libs
-Summary:	xrdp shared libraries
-Summary(pl.UTF-8):	Biblioteki współdzielone xrdp
-Group:		Libraries
-
-%description libs
-xrdp shared libraries.
-
-%description libs -l pl.UTF-8
-Biblioteki współdzielone xrdp.
-
 %package devel
 Summary:	Header files for xrdp libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek xrdp
 Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Header files for xrdp libraries.
@@ -156,14 +144,14 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/%{name},/etc/{pam.d,rc.d/init.d,securi
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/xrdp
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sesman
+cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/xrdp
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sesman
 %{__rm} $RPM_BUILD_ROOT/etc/pam.d/xrdp-sesman
 %{__ln_s} sesman $RPM_BUILD_ROOT/etc/pam.d/xrdp-sesman
 :> $RPM_BUILD_ROOT/etc/security/blacklist.sesman
 
 %{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/startwm.sh
-install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/startwm.sh
+cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/startwm.sh
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/lib*.{a,la}
 # obsoleted by pkg-config
@@ -193,9 +181,6 @@ fi
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
-
 %files
 %defattr(644,root,root,755)
 %doc COPYING NEWS.md README.md README.PLD
@@ -217,6 +202,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sysconfdir}/xrdp/reconnectwm.sh
 %attr(755,root,root) %{_sysconfdir}/xrdp/startwm.sh
 %attr(755,root,root) %{_bindir}/xrdp-dis
+%attr(755,root,root) %{_bindir}/xrdp-dumpfv1
 %attr(755,root,root) %{_bindir}/xrdp-genkeymap
 %attr(755,root,root) %{_bindir}/xrdp-keygen
 %attr(755,root,root) %{_bindir}/xrdp-sesadmin
@@ -226,12 +212,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/xrdp-sesman
 %dir %{_libdir}/xrdp
 %attr(755,root,root) %{_libdir}/xrdp/libcommon.so*
+%attr(755,root,root) %{_libdir}/xrdp/libipm.so*
 %attr(755,root,root) %{_libdir}/xrdp/libmc.so*
-%attr(755,root,root) %{_libdir}/xrdp/libscp.so*
+%attr(755,root,root) %{_libdir}/xrdp/libsesman.so*
+%attr(755,root,root) %{_libdir}/xrdp/libtoml.so*
 %attr(755,root,root) %{_libdir}/xrdp/libvnc.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxrdp.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxrdpapi.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxup.so*
+%dir %{_prefix}/libexec/xrdp
+%attr(755,root,root) %{_prefix}/libexec/xrdp/waitforx
+%attr(755,root,root) %{_prefix}/libexec/xrdp/xrdp-sesexec
 %{systemdunitdir}/xrdp.service
 %{systemdunitdir}/xrdp-sesman.service
 %dir %{_datadir}/xrdp
@@ -243,10 +234,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xrdp/xrdp24b.bmp
 %{_datadir}/xrdp/xrdp256.bmp
 %{_datadir}/xrdp/xrdp_logo.bmp
+%{_datadir}/xrdp/README.logo
+%{_datadir}/xrdp/sans-18.fv1
+%{_datadir}/xrdp/xrdp_logo.png
 %{_mandir}/man1/xrdp-dis.1*
 %{_mandir}/man5/sesman.ini.5*
 %{_mandir}/man5/xrdp.ini.5*
 %{_mandir}/man8/xrdp-chansrv.8*
+%{_mandir}/man8/xrdp-dumpfv1.8*
 %{_mandir}/man8/xrdp-genkeymap.8*
 %{_mandir}/man8/xrdp-keygen.8*
 %{_mandir}/man8/xrdp-sesadmin.8*
@@ -254,17 +249,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/xrdp-sesrun.8*
 %{_mandir}/man8/xrdp.8*
 
-%files libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libpainter.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libpainter.so.0
-%attr(755,root,root) %{_libdir}/librfxencode.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/librfxencode.so.0
-
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libpainter.so
-%attr(755,root,root) %{_libdir}/librfxencode.so
 %{_includedir}/ms-*.h
 %{_includedir}/painter.h
 %{_includedir}/rfxcodec_common.h

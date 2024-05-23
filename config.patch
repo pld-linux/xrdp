@@ -1,5 +1,5 @@
---- xrdp-0.9.19/sesman/sesman.ini~      2022-03-17 06:21:20.000000000 +0000
-+++ xrdp-0.9.19/sesman/sesman.ini       2022-03-22 06:06:23.939319489 +0000
+--- xrdp-0.10.0/sesman/sesman.ini~	2024-05-10 14:14:05.000000000 +0000
++++ xrdp-0.10.0/sesman/sesman.ini	2024-05-22 22:27:17.925196022 +0000
 @@ -12,13 +12,13 @@
  ReconnectScript=reconnectwm.sh
  
@@ -18,7 +18,7 @@
  ; When RestrictOutboundClipboard=all clipboard from the
  ; server is not pushed to the client.
  ; In addition, you can control text/file/image transfer restrictions
-@@ -65,10 +65,10 @@
+@@ -109,10 +109,10 @@
  
  [Logging]
  ; Note: Log levels can be any of: core, error, warning, info, debug, or trace
@@ -31,7 +31,7 @@
  #EnableConsole=false
  #ConsoleLevel=INFO
  #EnableProcessId=false
-@@ -102,8 +102,8 @@
+@@ -147,8 +147,8 @@
  param=-noreset
  param=-nolisten
  param=tcp
@@ -42,8 +42,8 @@
  
  [Xvnc]
  param=Xvnc
---- xrdp-0.9.18.1/xrdp/xrdp.ini~	2022-02-07 13:41:27.000000000 +0000
-+++ xrdp-0.9.18.1/xrdp/xrdp.ini	2022-02-22 17:22:28.239696963 +0000
+--- xrdp-0.10.0/xrdp/xrdp.ini~	2024-05-10 14:14:05.000000000 +0000
++++ xrdp-0.10.0/xrdp/xrdp.ini	2024-05-22 22:32:36.840354476 +0000
 @@ -4,6 +4,8 @@
  
  ; fork a new process for each incoming connection
@@ -53,7 +53,7 @@
  
  ; ports to listen on, number alone means listen on all interfaces
  ; 0.0.0.0 or :: if ipv6 is configured
-@@ -178,10 +180,10 @@
+@@ -195,10 +197,10 @@
  
  [Logging]
  ; Note: Log levels can be any of: core, error, warning, info, debug, or trace
@@ -66,8 +66,8 @@
  #EnableConsole=false
  #ConsoleLevel=INFO
  #EnableProcessId=false
-@@ -218,14 +220,14 @@
- ; Some session types such as Xorg, X11rdp and Xvnc start a display server.
+@@ -234,13 +236,13 @@
+ ; Some session types such as Xorg and Xvnc start a display server.
  ; Startup command-line parameters for the display server are configured
  ; in sesman.ini. See and configure also sesman.ini.
 -[Xorg]
@@ -75,7 +75,6 @@
 -lib=libxup.so
 -username=ask
 -password=ask
--ip=127.0.0.1
 -port=-1
 -code=20
 +#[Xorg]
@@ -83,13 +82,12 @@
 +#lib=libxup.so
 +#username=ask
 +#password=ask
-+#ip=127.0.0.1
 +#port=-1
 +#code=20
  
  [Xvnc]
  name=Xvnc
-@@ -247,13 +249,13 @@
+@@ -262,13 +264,13 @@
  ; Generic VNC Proxy
  ; Tailor this to specific hosts and VNC instances by specifying an ip
  ; and port and setting a suitable name.
@@ -109,8 +107,8 @@
 +#password=ask
  #pamusername=asksame
  #pampassword=asksame
- #pamsessionmng=127.0.0.1
-@@ -262,15 +264,15 @@
+ #delay_ms=2000
+@@ -276,15 +278,15 @@
  ; Generic RDP proxy using NeutrinoRDP
  ; Tailor this to specific hosts by specifying an ip and port and setting
  ; a suitable name.
