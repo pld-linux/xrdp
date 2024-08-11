@@ -20,11 +20,12 @@ URL:		https://www.xrdp.org/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.7.2
 BuildRequires:	fdk-aac-devel >= 0.1.0
+BuildRequires:	freetype-devel >= 1:2.8.0
 BuildRequires:	imlib2-devel >= 1.4.5
 BuildRequires:	lame-libs-devel
 BuildRequires:	libfuse-devel >= 2.6
 BuildRequires:	libjpeg-turbo-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	nasm
 BuildRequires:	openssl-devel >= 0.9.8
 BuildRequires:	opus-devel
@@ -43,6 +44,7 @@ Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires:	/usr/bin/Xvnc
 Requires:	fdk-aac >= 0.1.0
+Requires:	freetype >= 1:2.8.0
 Requires:	imlib2 >= 1.4.5
 Requires:	libfuse >= 2.6
 Requires:	openssl >= 0.9.8
@@ -133,6 +135,7 @@ cd ..
 	--disable-silent-rules \
 	--enable-tjpeg \
 	--enable-vsock \
+	--with-freetype2 \
 	--with-imlib2
 
 %{__make}
@@ -205,6 +208,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xrdp-dumpfv1
 %attr(755,root,root) %{_bindir}/xrdp-genkeymap
 %attr(755,root,root) %{_bindir}/xrdp-keygen
+%attr(755,root,root) %{_bindir}/xrdp-mkfv1
 %attr(755,root,root) %{_bindir}/xrdp-sesadmin
 %attr(755,root,root) %{_bindir}/xrdp-sesrun
 %attr(755,root,root) %{_sbindir}/xrdp
@@ -220,9 +224,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/xrdp/libxrdp.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxrdpapi.so*
 %attr(755,root,root) %{_libdir}/xrdp/libxup.so*
-%dir %{_prefix}/libexec/xrdp
-%attr(755,root,root) %{_prefix}/libexec/xrdp/waitforx
-%attr(755,root,root) %{_prefix}/libexec/xrdp/xrdp-sesexec
+%if "%{_libexecdir}" != "%{_libdir}"
+%dir %{_libexecdir}/xrdp
+%endif
+%attr(755,root,root) %{_libexecdir}/xrdp/waitforx
+%attr(755,root,root) %{_libexecdir}/xrdp/xrdp-sesexec
 %{systemdunitdir}/xrdp.service
 %{systemdunitdir}/xrdp-sesman.service
 %dir %{_datadir}/xrdp
@@ -244,6 +250,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/xrdp-dumpfv1.8*
 %{_mandir}/man8/xrdp-genkeymap.8*
 %{_mandir}/man8/xrdp-keygen.8*
+%{_mandir}/man8/xrdp-mkfv1.8*
 %{_mandir}/man8/xrdp-sesadmin.8*
 %{_mandir}/man8/xrdp-sesman.8*
 %{_mandir}/man8/xrdp-sesrun.8*
