@@ -2,7 +2,7 @@ Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
 Version:	0.10.1
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
@@ -76,24 +76,13 @@ xrdp używa jako backendu Xvnc lub X11rdp.
 Summary:	Header files for xrdp libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek xrdp
 Group:		Development/Libraries
+Obsoletes:	xrdp-static < 0.10.1-2
 
 %description devel
 Header files for xrdp libraries.
 
 %description devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek xrdp.
-
-%package static
-Summary:	Static xrdp libraries
-Summary(pl.UTF-8):	Statyczne biblioteki xrdp
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static xrdp libraries.
-
-%description static -l pl.UTF-8
-Statyczne biblioteki xrdp.
 
 %prep
 %setup -q
@@ -258,6 +247,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/libpainter.a
+%{_libdir}/librfxencode.a
 %{_includedir}/ms-*.h
 %{_includedir}/painter.h
 %{_includedir}/rfxcodec_common.h
@@ -270,8 +261,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/libpainter.pc
 %{_pkgconfigdir}/rfxcodec.pc
 %{_pkgconfigdir}/xrdp.pc
-
-%files static
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libpainter.a
-%attr(755,root,root) %{_libdir}/librfxencode.a
