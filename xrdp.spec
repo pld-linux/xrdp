@@ -1,3 +1,9 @@
+%bcond_without  fuse            # Build fuse(clipboard file / drive redir)
+
+%ifarch i686
+%undefine       with_fuse
+%endif
+
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
@@ -115,7 +121,7 @@ cd ..
 %configure \
 	--disable-silent-rules \
 	--enable-fdkaac \
-	--enable-fuse \
+	%{?with_fuse:--enable-fuse} \
 	--enable-ipv6 \
 	--enable-mp3lame \
 	--enable-opus \
