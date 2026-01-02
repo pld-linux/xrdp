@@ -1,13 +1,13 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.10.1
-Release:	2
+Version:	0.10.4.1
+Release:	1
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	65edae2e80bcaa9b8fa6b8abd60fbe0e
+# Source0-md5:	0da8c16ade55010f786ea4ca1627235a
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -113,17 +113,18 @@ cd ../librfxcodec
 %{__automake}
 cd ..
 %configure \
+	--disable-silent-rules \
 	--enable-fdkaac \
 	--enable-fuse \
 	--enable-ipv6 \
 	--enable-mp3lame \
 	--enable-opus \
-	--enable-pam-config=redhat \
 	--enable-painter \
+	--enable-pam-config=redhat \
 	--enable-pixman \
-	--disable-silent-rules \
 	--enable-tjpeg \
 	--enable-vsock \
+	--enable-x264 \
 	--with-freetype2 \
 	--with-imlib2
 
@@ -184,6 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/pulse
 %config(noreplace) %{_sysconfdir}/%{name}/cert.pem
+%config(noreplace) %{_sysconfdir}/%{name}/gfx.toml
 %config(noreplace) %{_sysconfdir}/%{name}/key.pem
 %config(noreplace) %{_sysconfdir}/%{name}/rsakeys.ini
 %config(noreplace) %{_sysconfdir}/%{name}/sesman.ini
@@ -204,23 +206,25 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/xrdp-chansrv
 %attr(755,root,root) %{_sbindir}/xrdp-sesman
 %dir %{_libdir}/xrdp
-%attr(755,root,root) %{_libdir}/xrdp/libcommon.so*
-%attr(755,root,root) %{_libdir}/xrdp/libipm.so*
-%attr(755,root,root) %{_libdir}/xrdp/libmc.so*
-%attr(755,root,root) %{_libdir}/xrdp/libsesman.so*
-%attr(755,root,root) %{_libdir}/xrdp/libtoml.so*
-%attr(755,root,root) %{_libdir}/xrdp/libvnc.so*
-%attr(755,root,root) %{_libdir}/xrdp/libxrdp.so*
-%attr(755,root,root) %{_libdir}/xrdp/libxrdpapi.so*
-%attr(755,root,root) %{_libdir}/xrdp/libxup.so*
+%{_libdir}/xrdp/libcommon.so*
+%{_libdir}/xrdp/libipm.so*
+%{_libdir}/xrdp/libmc.so*
+%{_libdir}/xrdp/libsesman.so*
+%{_libdir}/xrdp/libtoml.so*
+%{_libdir}/xrdp/libvnc.so*
+%{_libdir}/xrdp/libxrdp.so*
+%{_libdir}/xrdp/libxrdpapi.so*
+%{_libdir}/xrdp/libxup.so*
 %if "%{_libexecdir}" != "%{_libdir}"
 %dir %{_libexecdir}/xrdp
 %endif
 %attr(755,root,root) %{_libexecdir}/xrdp/waitforx
+%attr(755,root,root) %{_libexecdir}/xrdp/xrdp-droppriv
 %attr(755,root,root) %{_libexecdir}/xrdp/xrdp-sesexec
 %{systemdunitdir}/xrdp.service
 %{systemdunitdir}/xrdp-sesman.service
 %dir %{_datadir}/xrdp
+%attr(755,root,root) %{_datadir}/xrdp/xrdp-chkpriv
 %{_datadir}/xrdp/ad24b.bmp
 %{_datadir}/xrdp/ad256.bmp
 %{_datadir}/xrdp/cursor0.cur
@@ -234,6 +238,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xrdp/xrdp_logo.png
 %{_mandir}/man1/xrdp-dis.1*
 %{_mandir}/man5/sesman.ini.5*
+%{_mandir}/man5/gfx.toml.5*
 %{_mandir}/man5/xrdp.ini.5*
 %{_mandir}/man8/xrdp-chansrv.8*
 %{_mandir}/man8/xrdp-dumpfv1.8*

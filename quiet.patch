@@ -1,20 +1,11 @@
---- xrdp-0.9.18.1/xrdp/xrdp.c~	2022-02-07 07:10:38.000000000 +0000
-+++ xrdp-0.9.18.1/xrdp/xrdp.c	2022-02-22 17:35:31.774377966 +0000
-@@ -506,7 +506,7 @@
- 
-     if (startup_params.kill)
-     {
--        g_writeln("stopping xrdp");
-+        /*g_writeln("stopping xrdp");*/
-         /* read the xrdp.pid file */
-         fd = -1;
- 
-@@ -524,7 +524,7 @@
-             g_memset(text, 0, 32);
-             g_file_read(fd, text, 31);
-             pid = g_atoi(text);
+--- xrdp-0.10.4.1/xrdp/xrdp.c~	2025-07-07 12:37:24.000000000 +0000
++++ xrdp-0.10.4.1/xrdp/xrdp.c	2026-01-02 11:48:56.033106160 +0000
+@@ -496,7 +496,7 @@
+         }
+         else
+         {
 -            g_writeln("stopping process id %d", pid);
 +            /*g_writeln("stopping process id %d", pid);*/
- 
-             if (pid > 0)
-             {
+             int i;
+             g_sigterm(pid);
+             g_sleep(100);
