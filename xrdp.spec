@@ -1,14 +1,12 @@
-%bcond_without  fuse            # Build fuse(clipboard file / drive redir)
-
-%ifarch i686
-%undefine       with_fuse
-%endif
+#
+# Conditional build:
+%bcond_without	fuse	# clipboard file/drive redir via libfuse
 
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
 Version:	0.10.4.1
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
@@ -100,6 +98,7 @@ install %{SOURCE3} README.PLD
 install %{SOURCE4} README.PLD.pl
 
 %build
+CPPFLAGS="%{rpmcppflags} -D_FILE_OFFSET_BITS=64"
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
