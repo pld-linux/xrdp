@@ -1,6 +1,6 @@
---- xrdp-0.10.4.1/sesman/sesman.ini.in~	2025-07-07 12:37:24.000000000 +0000
-+++ xrdp-0.10.4.1/sesman/sesman.ini.in	2026-01-02 11:35:35.637727491 +0000
-@@ -12,13 +12,13 @@
+--- xrdp-0.10.6/sesman/sesman.ini.in.orig	2026-04-17 16:22:02.000000000 +0200
++++ xrdp-0.10.6/sesman/sesman.ini.in	2026-06-22 20:28:03.673385860 +0200
+@@ -12,13 +12,13 @@ DefaultWindowManager=startwm.sh
  ReconnectScript=reconnectwm.sh
  
  [Security]
@@ -18,7 +18,7 @@
  ; When RestrictOutboundClipboard=all clipboard from the
  ; server is not pushed to the client.
  ; In addition, you can control text/file/image transfer restrictions
-@@ -112,10 +112,10 @@
+@@ -121,10 +121,10 @@ Policy=Default
  
  [Logging]
  ; Note: Log levels can be any of: core, error, warning, info, debug, or trace
@@ -31,10 +31,10 @@
  #EnableConsole=false
  #ConsoleLevel=INFO
  #EnableProcessId=false
-@@ -150,8 +150,8 @@
- param=-noreset
- param=-nolisten
- param=tcp
+@@ -162,8 +162,8 @@ param=tcp
+ ; edit these lines to get debugging info in the xorgxrdp log file
+ #param=-logverbose
+ #param=5
 -param=-logfile
 -param=.xorgxrdp.%s.log
 +#param=-logfile

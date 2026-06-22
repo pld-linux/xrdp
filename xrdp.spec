@@ -5,13 +5,13 @@
 Summary:	Remote desktop server
 Summary(pl.UTF-8):	Serwer remote desktop
 Name:		xrdp
-Version:	0.10.5
+Version:	0.10.6
 Release:	1
 License:	Apache v2.0
 Group:		X11/Applications/Networking
 #Source0Download: https://github.com/neutrinolabs/xrdp/releases
 Source0:	https://github.com/neutrinolabs/xrdp/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	0c57dc0933d25b6c41a579e80508af29
+# Source0-md5:	c2d12e8d609fb71a9e9a83f6f7e2b68c
 Source1:	%{name}.init
 Source2:	%{name}.pamd
 Source3:	%{name}.README.PLD
@@ -27,9 +27,11 @@ BuildRequires:	fdk-aac-devel >= 0.1.0
 BuildRequires:	freetype-devel >= 1:2.8.0
 BuildRequires:	imlib2-devel >= 1.4.5
 BuildRequires:	lame-libs-devel
-BuildRequires:	libfuse-devel >= 2.6
+BuildRequires:	libfuse3-devel >= 3.1.0
 BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libtool >= 2:2
+# or openh264-devel >= 2.0.0 with --enable-openh264
+BuildRequires:	libx264-devel >= 0.3.0
 BuildRequires:	nasm
 BuildRequires:	openssl-devel >= 0.9.8
 BuildRequires:	opus-devel
@@ -50,7 +52,7 @@ Requires:	/usr/bin/Xvnc
 Requires:	fdk-aac >= 0.1.0
 Requires:	freetype >= 1:2.8.0
 Requires:	imlib2 >= 1.4.5
-Requires:	libfuse >= 2.6
+Requires:	libfuse3 >= 3.1.0
 Requires:	openssl >= 0.9.8
 Requires:	pixman >= 0.1.0
 Requires:	rc-scripts
